@@ -1,18 +1,56 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, useColorScheme, TouchableOpacity } from "react-native";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route, navigation }) {
+  const scheme = useColorScheme();
+  const user = route.params?.user || "Unknown";
+
+  const handleLogout = () => {
+    navigation.replace("Login");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>โปรไฟล์ผู้ใช้</Text>
-      <Text>ชื่อ: นายจักรกฤษ</Text>
-      <Text>ที่อยู่: กรุงเทพฯ</Text>
-      <Text>เบอร์: 080-123-4567</Text>
+    <View
+      style={[
+        styles.container,
+        scheme === "dark" ? styles.containerDark : styles.containerLight,
+      ]}
+    >
+      <Text style={[styles.title, scheme === "dark" ? styles.textDark : styles.textLight]}>
+        User Profile
+      </Text>
+      <Text style={[styles.userText, scheme === "dark" ? styles.textDark : styles.textLight]}>
+        Email: {user}
+      </Text>
+
+      <TouchableOpacity
+        style={[styles.button, scheme === "dark" ? styles.buttonDark : styles.buttonLight]}
+        onPress={handleLogout}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
+  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
+  containerLight: { backgroundColor: "#fff" },
+  containerDark: { backgroundColor: "#121212" },
+
+  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 20 },
+  userText: { fontSize: 18, textAlign: "center", marginBottom: 30 },
+
+  textLight: { color: "#333" },
+  textDark: { color: "#eee" },
+
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+  },
+  buttonLight: { backgroundColor: "#ff6b6b" }, // สีแดงสวย
+  buttonDark: { backgroundColor: "#ff8787" },
+
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "bold", textAlign: "center" },
 });
